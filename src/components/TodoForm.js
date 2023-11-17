@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const initialFormValues = {
   title: '',
   description: '',
 };
 
-export const TodoForm = ({ todoAdd }) => {
+export const TodoForm = ({ todoAdd, todoEdit, todoUpdate, setTodoEdit }) => {
   const [formValues, setFormValues] = useState(initialFormValues);
   const { title, description } = formValues; //desestructuracion para acceder facil al objeto initialForms
 
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+
+  useEffect(() => {
+    if (todoEdit !== null) {
+      setFormValues(todoEdit);
+    }
+  }, [todoEdit]);
 
   const handleInputChange = (e) => {
     const changedFormValues = {
@@ -22,7 +28,7 @@ export const TodoForm = ({ todoAdd }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); //evita q se recargue la pag cada vez q se le de click al boton del form
-    //Agregar tarea, el metodo trim elimina los espacios en blanco
+    //el metodo trim elimina los espacios en blanco
     if (title.trim() === '') {
       setError('Debes indicar un titulo');
       return;
@@ -31,9 +37,17 @@ export const TodoForm = ({ todoAdd }) => {
       setError('Debes indicar una descripción');
       return;
     }
-    todoAdd(formValues);
-    setFormValues(initialFormValues);
-    setSuccessMessage('task added successfully');
+
+    if (todoEdit) {
+      //Updating
+      todoUpdate(formValues);
+      setSuccessMessage('task edited successfully');
+    } else {
+      //Add task
+      todoAdd(formValues);
+      setFormValues(initialFormValues);
+      setSuccessMessage('task added successfully');
+    }
 
     setTimeout(() => {
       setSuccessMessage(null);
@@ -44,7 +58,7 @@ export const TodoForm = ({ todoAdd }) => {
 
   return (
     <div>
-      <h2>New Task</h2>
+      <h2>{todoEdit ? 'Edit Task' : 'New Task'}</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -62,9 +76,20 @@ export const TodoForm = ({ todoAdd }) => {
           onChange={handleInputChange}
         ></textarea>
         <div className="d-grid gap-2 d-md-block">
-          <button className="btn btn-primary mt-2">Add task</button>
+          <button className="btn btn-primary mt-2">
+            {todoEdit ? 'Update Task' : 'Add task'}
+          </button>
         </div>
       </form>
+
+      {todoEdit && (
+        <button
+          onClick={() => setTodoEdit(null)}
+          className="btn btn-warning mt-2"
+        >
+          Cancel Edit
+        </button>
+      )}
 
       {error && <div className="alert alert-danger mt-2">{error}</div>}
       {successMessage && (

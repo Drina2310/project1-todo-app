@@ -1,7 +1,12 @@
 import React from 'react';
 import Todo from './Todo';
 
-export const TodoList = ({ todos, todoDeleted, todoCompleted }) => {
+export const TodoList = ({
+  todos,
+  todoDeleted,
+  todoCompleted,
+  setTodoEdit,
+}) => {
   return (
     <>
       <h2>Lista de Tareas</h2>
@@ -11,6 +16,7 @@ export const TodoList = ({ todos, todoDeleted, todoCompleted }) => {
           key={todo.id}
           todoDelete={todoDeleted}
           todoCompleted={todoCompleted}
+          setTodoEdit={setTodoEdit}
         />
       ))}
     </>
