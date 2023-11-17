@@ -5,7 +5,6 @@ import { initialTodos } from './dataTodos';
 
 function App() {
   const [todos, setTodos] = useState(initialTodos);
-  // console.log(todos);
   const todoDeleted = (todoId) => {
     //updateTodos contendrá todas las tareas excepto la que tiene el id que deseas eliminar
     const updateTodos = todos.filter((todo) => todo.id !== todoId);
@@ -31,6 +30,20 @@ function App() {
     );
     setTodos(updateTodos);
   };
+
+  const todoAdd = (todo) => {
+    const newTodo = {
+      id: Date.now(),
+      ...todo,
+      completed: false,
+    };
+
+    const updateTodos = [
+      newTodo,
+      ...todos, //son la lista de todos del estado linea 7
+    ];
+    setTodos(updateTodos);
+  };
   return (
     <div className="container mt-4">
       <div className="row">
@@ -42,7 +55,7 @@ function App() {
           />
         </div>
         <div className="col-4">
-          <TodoForm />
+          <TodoForm todoAdd={todoAdd} />
         </div>
       </div>
     </div>

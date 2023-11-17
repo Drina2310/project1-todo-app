@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-const initialFormValue = {
+const initialFormValues = {
   title: '',
   description: '',
 };
 
-export const TodoForm = () => {
-  const [formValues, setFormValues] = useState(initialFormValue);
+export const TodoForm = ({ todoAdd }) => {
+  const [formValues, setFormValues] = useState(initialFormValues);
   const { title, description } = formValues; //desestructuracion para acceder facil al objeto initialForms
+
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleInputChange = (e) => {
     const changedFormValues = {
@@ -19,7 +22,24 @@ export const TodoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault(); //evita q se recargue la pag cada vez q se le de click al boton del form
-    console.log('Submit');
+    //Agregar tarea, el metodo trim elimina los espacios en blanco
+    if (title.trim() === '') {
+      setError('Debes indicar un titulo');
+      return;
+    }
+    if (description.trim() === '') {
+      setError('Debes indicar una descripción');
+      return;
+    }
+    todoAdd(formValues);
+    setFormValues(initialFormValues);
+    setSuccessMessage('task added successfully');
+
+    setTimeout(() => {
+      setSuccessMessage(null);
+    }, 2000);
+
+    setError(null);
   };
 
   return (
@@ -45,6 +65,11 @@ export const TodoForm = () => {
           <button className="btn btn-primary mt-2">Add task</button>
         </div>
       </form>
+
+      {error && <div className="alert alert-danger mt-2">{error}</div>}
+      {successMessage && (
+        <div className="alert alert-success mt-2">{successMessage}</div>
+      )}
     </div>
   );
 };
