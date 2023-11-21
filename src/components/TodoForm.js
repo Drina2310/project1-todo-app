@@ -13,8 +13,10 @@ export const TodoForm = ({ todoAdd, todoEdit, todoUpdate, setTodoEdit }) => {
   const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
-    if (todoEdit !== null) {
+    if (todoEdit) {
       setFormValues(todoEdit);
+    } else {
+      setFormValues(initialFormValues);
     }
   }, [todoEdit]);
 

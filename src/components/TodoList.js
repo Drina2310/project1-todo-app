@@ -10,15 +10,22 @@ export const TodoList = ({
   return (
     <>
       <h2>Lista de Tareas</h2>
-      {todos.map((todo) => (
-        <Todo
-          data={todo}
-          key={todo.id}
-          todoDelete={todoDeleted}
-          todoCompleted={todoCompleted}
-          setTodoEdit={setTodoEdit}
-        />
-      ))}
+
+      {todos.length === 0 ? (
+        <div className="alert alert-primary">
+          There are no tasks, please add one :)
+        </div>
+      ) : (
+        todos.map((todo) => (
+          <Todo
+            data={todo}
+            key={todo.id}
+            todoDelete={todoDeleted}
+            todoCompleted={todoCompleted}
+            setTodoEdit={setTodoEdit}
+          />
+        ))
+      )}
     </>
   );
 };

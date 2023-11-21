@@ -9,6 +9,9 @@ function App() {
 
   // Delete task
   const todoDeleted = (todoId) => {
+    if (todoEdit && todoId === todoEdit.id) {
+      setTodoEdit(null);
+    }
     //updateTodos contendrá todas las tareas excepto la que tiene el id que deseas eliminar
     const updateTodos = todos.filter((todo) => todo.id !== todoId);
     setTodos(updateTodos);
@@ -38,13 +41,13 @@ function App() {
   };
 
   // Edit task
-
   const todoUpdate = (todoEdit) => {
     const changedTodos = todos.map((todo) =>
       todo.id === todoEdit.id ? todoEdit : todo
     );
     setTodos(changedTodos);
   };
+
   return (
     <div className="container mt-4">
       <div className="row">
