@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TodoForm } from './components/TodoForm';
 import { TodoList } from './components/TodoList';
-import { initialTodos } from './dataTodos';
 
-function App() {
-  const [todos, setTodos] = useState(initialTodos);
+const localTodos = JSON.parse(localStorage.getItem('todos'));
+
+const App = () => {
+  const [todos, setTodos] = useState(localTodos || []);
   const [todoEdit, setTodoEdit] = useState(null);
+
+  //Persistencia de los estados (localStorage)
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
 
   // Delete task
   const todoDeleted = (todoId) => {
@@ -70,6 +76,6 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export default App;

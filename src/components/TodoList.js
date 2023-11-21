@@ -9,7 +9,7 @@ export const TodoList = ({
 }) => {
   return (
     <>
-      <h2>Lista de Tareas</h2>
+      <h2>Things to do</h2>
 
       {todos.length === 0 ? (
         <div className="alert alert-primary">
